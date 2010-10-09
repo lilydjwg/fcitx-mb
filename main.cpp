@@ -397,7 +397,8 @@ void do_help(){
 }
 
 void do_version(){
-  cout<<"\t\t小企鹅输入法码表操作工具 v0.7.20091115"<<endl;
+  // cout<<"\t\t小企鹅输入法码表操作工具 v0.7.20091115"<<endl;
+  cout<<"\t\t小企鹅输入法码表操作工具 v0.8.20101010"<<endl;
 }
 
 void error(int Err){
@@ -414,17 +415,17 @@ void error(int Err){
 
 
 string g2u(string gb){
-  Iconv converter("gb18030", "utf-8");
-  return converter(gb.c_str(), gb.length());
+  // Iconv converter("gb18030", "utf-8");
+  // return converter(gb.c_str(), gb.length());
   // fcitx-utf-8 不需要这些了
-  // return gb;
+  return gb;
 }
 
 string u2g(string unicode){
   // 用 gb18030 才能转换∀等字符，GBK 不行
-  Iconv converter("utf-8", "gb18030");
-  return converter(unicode.c_str(), unicode.length());
-  // return unicode;
+  // Iconv converter("utf-8", "gb18030");
+  // return converter(unicode.c_str(), unicode.length());
+  return unicode;
 }
 
 // vim:sw=2:fdm=expr:fde=getline(v\:lnum+1)=~'\\v^([A-Za-z]|/)+'?0\:1
