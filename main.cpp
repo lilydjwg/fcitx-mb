@@ -23,6 +23,8 @@
 #include<cstdlib>
 #include<fstream>
 #include<sstream>
+#include<signal.h>
+#include<execinfo.h>
 #include"Iconv/Iconv.h"
 #include"mb.h"
 
@@ -48,11 +50,14 @@ void do_vwrite(string="");
 void do_backup(string);
 string g2u(string);
 string u2g(string);
+void SetMyExceptionHandler();
+void OnException(int signo);
 
 TABLE mbTable;
 string mbName = "";
 
 int main (int argc, char *argv[]) {
+  SetMyExceptionHandler();
 
   if (argc != 2 && argc != 3) {
     fprintf (stderr, "\nUsage: %s <Source File>\n\n", argv[0]);
@@ -426,6 +431,53 @@ string u2g(string unicode){
   // Iconv converter("utf-8", "gb18030");
   // return converter(unicode.c_str(), unicode.length());
   return unicode;
+}
+
+void SetMyExceptionHandler(){
+  int signo;
+
+  for(signo = SIGHUP; signo < SIGUNUSED; signo++){
+    signal(signo, OnException);
+  }
+}
+
+void OnException(int signo){
+  if(signo == SIGCHLD)
+    return;
+
+  if(signo == SIGCONT)
+    return;
+
+  void *array[10];
+  size_t size;
+  char **strings = NULL;
+  size_t i;
+
+  size = backtrace(array, 10);
+  strings = backtrace_symbols(array, size);
+
+  if(strings){
+    FILE *fp = NULL;
+    fp = fopen("/home/lilydjwg/tmpfs/mb_crash.log", "w");
+
+    printf("Obtained %zd stack frames.\n", size);
+    if(fp){
+      fprintf(fp, "mb -- Get Signal No. %d\n", signo);
+      fprintf(fp, "Obtained %zd stack frames.\n", size);
+    }
+
+    for(i = 0; i < size; i++){
+      printf("%s\n", strings[i]);
+      if(fp)
+	fprintf(fp, "%s\n", strings[i]);
+    }
+
+    if(fp)
+      fclose(fp);
+    free(strings);
+  }
+
+  exit(128+signo);
 }
 
 // vim:sw=2:fdm=expr:fde=getline(v\:lnum+1)=~'\\v^([A-Za-z]|/)+'?0\:1
