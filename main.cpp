@@ -460,6 +460,7 @@ void OnException(int signo){
     FILE *fp = NULL;
     fp = fopen("/home/lilydjwg/tmpfs/mb_crash.log", "w");
 
+    printf("mb -- Get Signal No. %d\n", signo);
     printf("Obtained %zd stack frames.\n", size);
     if(fp){
       fprintf(fp, "mb -- Get Signal No. %d\n", signo);
