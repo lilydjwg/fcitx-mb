@@ -1,9 +1,9 @@
 CC=g++
 CPPFLAGS=-g
-objects=main.o mb.o
+objects=main.o mb.o Iconv/Iconv.o
 
 mb: $(objects)
-	$(CC) $(objects) Iconv/Iconv.o -o mb
+	$(CC) $(objects) -o mb
 
 clean:
 	-rm *.o mb

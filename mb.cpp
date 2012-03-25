@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-// FIXME  Ôø³öÏÖÁË´íÎó£¬µ¼ÖÂÂë±íÄ©Î²³öÏÖÒ»¸ö±àÂëÎª4×Ö½ÚÂÒÂëµÄÏî 2010Äê2ÔÂ13ÈÕ
+// FIXME  æ›¾å‡ºç°äº†é”™è¯¯ï¼Œå¯¼è‡´ç è¡¨æœ«å°¾å‡ºç°ä¸€ä¸ªç¼–ç ä¸º4å­—èŠ‚ä¹±ç çš„é¡¹ 2010å¹´2æœˆ13æ—¥
 
 #include<iostream>
 #include"mb.h"
@@ -47,9 +47,9 @@ bool operator<(const RECORD& a, const RECORD& b){
 }
 
 unsigned int TABLE::loadTable (char *fname) {
-    //²»ÄÜÔØÈëÆ´Òô´Ê¿â /usr/share/fcitx/data/pyphrase.mb
-    //ºÍ /usr/share/fcitx/data/pybase.mb
-    //ºóÀ´·¢ÏÖÒòÎªËüÃÇ²»ÊÇÕıÈ·µÄÂë±í£¡£¡
+    //ä¸èƒ½è½½å…¥æ‹¼éŸ³è¯åº“ /usr/share/fcitx/data/pyphrase.mb
+    //å’Œ /usr/share/fcitx/data/pybase.mb
+    //åæ¥å‘ç°å› ä¸ºå®ƒä»¬ä¸æ˜¯æ­£ç¡®çš„ç è¡¨ï¼ï¼
 
     FILE		*fpDict;
     unsigned int	 iTemp;
@@ -66,30 +66,30 @@ unsigned int TABLE::loadTable (char *fname) {
 	return FILE_ERROR;
     }
 
-    //ÏÈ¶ÁÈ¡Âë±íµÄĞÅÏ¢
-    fread (&iTemp, sizeof (unsigned int), 1, fpDict);//°æ±¾Ö¸Ê¾
+    //å…ˆè¯»å–ç è¡¨çš„ä¿¡æ¯
+    fread (&iTemp, sizeof (unsigned int), 1, fpDict);//ç‰ˆæœ¬æŒ‡ç¤º
     if (iTemp == 0) {
-	fread (&version, sizeof (char), 1, fpDict);//°æ±¾ºÅ
-	// printf (";fcitx °æ±¾ 0x%02x Âë±íÎÄ¼ş\n", version);
-	fread (&iTemp, sizeof (unsigned int), 1, fpDict);//¼üÂë×Ö´®µÄ³¤¶È
+	fread (&version, sizeof (char), 1, fpDict);//ç‰ˆæœ¬å·
+	// printf (";fcitx ç‰ˆæœ¬ 0x%02x ç è¡¨æ–‡ä»¶\n", version);
+	fread (&iTemp, sizeof (unsigned int), 1, fpDict);//é”®ç å­—ä¸²çš„é•¿åº¦
     }
     else
 	version = '\x02';
-	// printf (";fcitx °æ±¾ 0x02 Âë±íÎÄ¼ş\n");
+	// printf (";fcitx ç‰ˆæœ¬ 0x02 ç è¡¨æ–‡ä»¶\n");
 
     fread (strTemp, sizeof (char), iTemp + 1, fpDict);
     code = strTemp;
-    // printf ("¼üÂë=%s\n", strTemp);
+    // printf ("é”®ç =%s\n", strTemp);
     fread (&cTemp, sizeof (unsigned char), 1, fpDict);
     codeLen = cTemp;
-    // printf ("Âë³¤=%d\n", iTemp);
+    // printf ("ç é•¿=%d\n", iTemp);
 
     if (version) {
 	fread (&cTemp, sizeof (unsigned char), 1, fpDict);
 	pyLen = cTemp;
 	// if (cTemp) {
-	    // printf ("Æ´Òô=@\n");
-	    // printf ("Æ´Òô³¤¶È=%d\n", iPYLen);
+	    // printf ("æ‹¼éŸ³=@\n");
+	    // printf ("æ‹¼éŸ³é•¿åº¦=%d\n", iPYLen);
 	// }
     }
 
@@ -97,12 +97,12 @@ unsigned int TABLE::loadTable (char *fname) {
     fread (strTemp, sizeof (char), iTemp + 1, fpDict);
     notCode = strTemp;
     // if (iTemp)
-	// printf ("¹æ±Ü×Ö·û=%s\n", strTemp);
+	// printf ("è§„é¿å­—ç¬¦=%s\n", strTemp);
 
     unsigned int i;
     fread (&cTemp, sizeof (unsigned char), 1, fpDict);
-    if (cTemp) {		//±íÊ¾ÓĞ×é´Ê¹æÔò
-	// printf ("[×é´Ê¹æÔò]\n");
+    if (cTemp) {		//è¡¨ç¤ºæœ‰ç»„è¯è§„åˆ™
+	// printf ("[ç»„è¯è§„åˆ™]\n");
 	for (i = 0; i < codeLen - 1; i++) {
 	    fread (&cTemp, sizeof (unsigned char), 1, fpDict);
 	    // printf ("%c", (iRule) ? 'a' : 'e');
@@ -130,8 +130,8 @@ unsigned int TABLE::loadTable (char *fname) {
 	}
     }
 
-    // printf ("[Êı¾İ]\n");
-    unsigned int j;//´ÊµÄÊıÁ¿
+    // printf ("[æ•°æ®]\n");
+    unsigned int j;//è¯çš„æ•°é‡
     unsigned int k;
     unsigned int l;
     char strHZ[STR_MAX];
@@ -142,13 +142,13 @@ unsigned int TABLE::loadTable (char *fname) {
 	iTemp = pyLen;
 
     for (i = 0; i < j; i++) {
-	fread (strTemp, sizeof (char), iTemp + 1, fpDict);//¶ÁÈ¡¼üÂë
-	fread (&k, sizeof (unsigned int), 1, fpDict);//ºº×ÖµÄ×Ö½ÚÊı+1
+	fread (strTemp, sizeof (char), iTemp + 1, fpDict);//è¯»å–é”®ç 
+	fread (&k, sizeof (unsigned int), 1, fpDict);//æ±‰å­—çš„å­—èŠ‚æ•°+1
 	fread (strHZ, sizeof (unsigned char), k, fpDict);
 
 	if (version) {
 	    fread (&cTemp, sizeof (unsigned char), 1, fpDict);
-	    //Õâ¸öÊÇÓÃÀ´Ö¸Ê¾ÊÇ·ñÎªÆ´ÒôµÄ
+	    //è¿™ä¸ªæ˜¯ç”¨æ¥æŒ‡ç¤ºæ˜¯å¦ä¸ºæ‹¼éŸ³çš„
 	    if (cTemp) {
 		// printf ("@%s %s\n", strCode, strHZ);
 		record.ispy = true;
@@ -175,23 +175,23 @@ unsigned int TABLE::loadTable (char *fname) {
 }
 
 void TABLE::print(){
-    printf (";fcitx °æ±¾ 0x%02x Âë±íÎÄ¼ş\n", version);
-    cout<<"¼üÂë="<<code<<endl;
-    cout<<"Âë³¤="<<(int)codeLen<<endl;
+    printf (";fcitx ç‰ˆæœ¬ 0x%02x ç è¡¨æ–‡ä»¶\n", version);
+    cout<<"é”®ç ="<<code<<endl;
+    cout<<"ç é•¿="<<(int)codeLen<<endl;
     if(pyLen){
-	printf ("Æ´Òô=@\n");
-	printf ("Æ´Òô³¤¶È=%d\n", pyLen);
+	printf ("æ‹¼éŸ³=@\n");
+	printf ("æ‹¼éŸ³é•¿åº¦=%d\n", pyLen);
     }
     if(notCode != "")
-	cout<<"¹æ±Ü×Ö·û="<<notCode<<endl;
+	cout<<"è§„é¿å­—ç¬¦="<<notCode<<endl;
     unsigned int i;
     if(wordsRule.size()){
-	cout<<"[×é´Ê¹æÔò]"<<endl;
+	cout<<"[ç»„è¯è§„åˆ™]"<<endl;
 	for(i=0; i<wordsRule.size(); i++)
 	    cout<<wordsRule[i]<<endl;
     }
 
-    cout<<"[Êı¾İ]"<<endl;
+    cout<<"[æ•°æ®]"<<endl;
     for(i=0;i<records.size();i++){
 	if(records[i].ispy)
 	    cout<<'@';
@@ -200,23 +200,23 @@ void TABLE::print(){
 }
 
 void TABLE::vprint(){
-    printf (";fcitx °æ±¾ 0x%02x Âë±íÎÄ¼ş\n", version);
-    cout<<"¼üÂë="<<code<<endl;
-    cout<<"Âë³¤="<<(int)codeLen<<endl;
+    printf (";fcitx ç‰ˆæœ¬ 0x%02x ç è¡¨æ–‡ä»¶\n", version);
+    cout<<"é”®ç ="<<code<<endl;
+    cout<<"ç é•¿="<<(int)codeLen<<endl;
     if(pyLen){
-	printf ("Æ´Òô=@\n");
-	printf ("Æ´Òô³¤¶È=%d\n", pyLen);
+	printf ("æ‹¼éŸ³=@\n");
+	printf ("æ‹¼éŸ³é•¿åº¦=%d\n", pyLen);
     }
     if(notCode != "")
-	cout<<"¹æ±Ü×Ö·û="<<notCode<<endl;
+	cout<<"è§„é¿å­—ç¬¦="<<notCode<<endl;
     unsigned int i;
     if(wordsRule.size()){
-	cout<<"[×é´Ê¹æÔò]"<<endl;
+	cout<<"[ç»„è¯è§„åˆ™]"<<endl;
 	for(i=0; i<wordsRule.size(); i++)
 	    cout<<wordsRule[i]<<endl;
     }
 
-    cout<<"[Êı¾İ]"<<endl;
+    cout<<"[æ•°æ®]"<<endl;
     for(i=0;i<records.size();i++){
 	if(records[i].ispy)
 	    cout<<'@';
@@ -237,7 +237,7 @@ vector<RECORD> TABLE::search_code(string from, string to){
   if(to == "")
     to = from;
 
-  //¶ş·ÖËÑË÷
+  //äºŒåˆ†æœç´¢
   int left = 0;
   int right = records.size()-1;
   int middle = -1;
@@ -250,21 +250,21 @@ vector<RECORD> TABLE::search_code(string from, string to){
       right=middle-1;
   }
 
-  if(middle == records.size()-1 && from != records[middle].code){//ÕÒµ½×îºó¶¼Ã»ÓĞÕÒµ½
+  if(middle == records.size()-1 && from != records[middle].code){//æ‰¾åˆ°æœ€åéƒ½æ²¡æœ‰æ‰¾åˆ°
       return results;
   }
 
-  //ÏòÇ°»ØËİ
+  //å‘å‰å›æº¯
   while(middle >= 0 && from == records[middle].code){
     middle--;
   }
   middle++;
 
-  //Ïòºó²éÕÒ
+  //å‘åæŸ¥æ‰¾
   while(records[middle].code <= to){
     results.push_back(records[middle]);
     middle++;
-    if(middle > records.size()-1)//ÒÑ¾­ÕÒµ½×îºóÒ»¸öÁË
+    if(middle > records.size()-1)//å·²ç»æ‰¾åˆ°æœ€åä¸€ä¸ªäº†
 	break;
   }
 
@@ -282,14 +282,14 @@ vector<string> TABLE::search_hz(string tgt){
 }
 
 int TABLE::ins(RECORD record){
-  //ÏÈ¿´¿´Êı¾İÊÇ·ñÒÑ¾­´æÔÚ
+  //å…ˆçœ‹çœ‹æ•°æ®æ˜¯å¦å·²ç»å­˜åœ¨
   vector<RECORD> alreadyCode = search_code(record.code);
   for(int i=0;i<alreadyCode.size();i++){
-      if(alreadyCode[i].hz == record.hz)//ÒÑ¾­ÓĞÁË
+      if(alreadyCode[i].hz == record.hz)//å·²ç»æœ‰äº†
 	  return 1;
   }
 
-  //¶ş·ÖËÑË÷Ó¦²åÈëµÄÎ»ÖÃ
+  //äºŒåˆ†æœç´¢åº”æ’å…¥çš„ä½ç½®
   int left = 0;
   int right = records.size()-1;
   int middle = -1;
@@ -301,8 +301,8 @@ int TABLE::ins(RECORD record){
     else
       right=middle-1;
   }
-  //²åÈëÔÚ±àÂë¸ÕºÃ±ÈÆä´óµÄºóÃæ£¬µ«¶ş·ÖËÑË÷³öÀ´µÄ£¬Èç¹û²»ÏàµÈ£¬ÄÇÃ´¼ÈÓĞ¿ÉÄÜ´ó£¬
-  //Ò²ÓĞ¿ÉÄÜĞ¡
+  //æ’å…¥åœ¨ç¼–ç åˆšå¥½æ¯”å…¶å¤§çš„åé¢ï¼Œä½†äºŒåˆ†æœç´¢å‡ºæ¥çš„ï¼Œå¦‚æœä¸ç›¸ç­‰ï¼Œé‚£ä¹ˆæ—¢æœ‰å¯èƒ½å¤§ï¼Œ
+  //ä¹Ÿæœ‰å¯èƒ½å°
   if (record.code>records[middle].code) middle++;
 
   vector<RECORD>::iterator pos = records.begin() + middle;
@@ -312,9 +312,9 @@ int TABLE::ins(RECORD record){
 }
 
 int TABLE::del(RECORD record){
-  int count = 0;//¼ÆÊı
+  int count = 0;//è®¡æ•°
 
-  //¶ş·ÖËÑË÷Ó¦É¾³ıµÄÎ»ÖÃ
+  //äºŒåˆ†æœç´¢åº”åˆ é™¤çš„ä½ç½®
   int left = 0;
   int right = records.size()-1;
   int middle = -1;
@@ -327,16 +327,16 @@ int TABLE::del(RECORD record){
       right=middle-1;
   }
 
-  if(middle == records.size()-1 && record.code != records[middle].code)//ÕÒµ½×îºó¶¼Ã»ÓĞÕÒµ½
+  if(middle == records.size()-1 && record.code != records[middle].code)//æ‰¾åˆ°æœ€åéƒ½æ²¡æœ‰æ‰¾åˆ°
       return count;
 
-  //ÏòÇ°»ØËİ
+  //å‘å‰å›æº¯
   while(middle >= 0 && record.code == records[middle].code){
     middle--;
   }
   middle++;
 
-  //Ïòºó²éÕÒ
+  //å‘åæŸ¥æ‰¾
   while(records[middle].code == record.code){
     if(records[middle].hz == record.hz){
       vector<RECORD>::iterator pos = records.begin() + middle;
@@ -344,7 +344,7 @@ int TABLE::del(RECORD record){
       count++;
     }
     middle++;
-    if(middle > records.size()-1)//ÒÑ¾­ÕÒµ½×îºóÒ»¸öÁË
+    if(middle > records.size()-1)//å·²ç»æ‰¾åˆ°æœ€åä¸€ä¸ªäº†
 	break;
   }
 
@@ -354,29 +354,29 @@ int TABLE::del(RECORD record){
 void TABLE::write(string fname){
   ofstream thisprint(TMP_PRINT);
 
-  thisprint<<";fcitx °æ±¾ 0x";
+  thisprint<<";fcitx ç‰ˆæœ¬ 0x";
   thisprint.fill('0');
   thisprint.width(2);
   thisprint<<(int)version;
   thisprint.fill(' ');
   thisprint.width(0);
-  thisprint<<" Âë±íÎÄ¼ş"<<endl;
-  thisprint<<"¼üÂë="<<code<<endl;
-  thisprint<<"Âë³¤="<<(int)codeLen<<endl;
+  thisprint<<" ç è¡¨æ–‡ä»¶"<<endl;
+  thisprint<<"é”®ç ="<<code<<endl;
+  thisprint<<"ç é•¿="<<(int)codeLen<<endl;
   if(pyLen){
-    thisprint<<"Æ´Òô=@"<<endl;
-    thisprint<<"Æ´Òô³¤¶È="<<(int)pyLen<<endl;
+    thisprint<<"æ‹¼éŸ³=@"<<endl;
+    thisprint<<"æ‹¼éŸ³é•¿åº¦="<<(int)pyLen<<endl;
   }
   if(notCode != "")
-    thisprint<<"¹æ±Ü×Ö·û="<<notCode<<endl;
+    thisprint<<"è§„é¿å­—ç¬¦="<<notCode<<endl;
   unsigned int i;
   if(wordsRule.size()){
-    thisprint<<"[×é´Ê¹æÔò]"<<endl;
+    thisprint<<"[ç»„è¯è§„åˆ™]"<<endl;
     for(i=0; i<wordsRule.size(); i++)
       thisprint<<wordsRule[i]<<endl;
   }
 
-  thisprint<<"[Êı¾İ]"<<endl;
+  thisprint<<"[æ•°æ®]"<<endl;
   for(i=0;i<records.size();i++)
     thisprint<<records[i].code<<" "<<records[i].hz<<endl;
 
@@ -398,11 +398,11 @@ int TABLE::vwrite(string fname){
     }
 
     iTemp = 0;
-    fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);//°æ±¾Ö¸Ê¾
+    fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);//ç‰ˆæœ¬æŒ‡ç¤º
     cTemp = version;
-    fwrite(&cTemp, sizeof (char), 1, fpDict);//°æ±¾ºÅ
+    fwrite(&cTemp, sizeof (char), 1, fpDict);//ç‰ˆæœ¬å·
     iTemp = code.length();
-    fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);//¼üÂë×Ö´®µÄ³¤¶È
+    fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);//é”®ç å­—ä¸²çš„é•¿åº¦
     strTemp = (char*)malloc(sizeof(char) * iTemp + 1);
     strcpy(strTemp, code.c_str());
     fwrite(strTemp, sizeof (char) * iTemp + 1, 1, fpDict);
@@ -418,7 +418,7 @@ int TABLE::vwrite(string fname){
     strcpy(strTemp, notCode.c_str());
     fwrite(strTemp, sizeof (char) * iTemp + 1, 1, fpDict);
 
-    if(!wordsRule.empty()){//×é´Ê¹æÔò
+    if(!wordsRule.empty()){//ç»„è¯è§„åˆ™
 	cTemp = '\x07';
 	fwrite(&cTemp, sizeof (unsigned char), 1, fpDict);
 	for(int i=0;i<codeLen-1;i++){
@@ -454,12 +454,12 @@ int TABLE::vwrite(string fname){
 	}
     }
 
-    //Êı¾İ
+    //æ•°æ®
     iTemp = records.size();
     cTemp = 0;
     fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);
     for(int i=0; i<records.size(); i++){
-	//ÕâÀï±àÂë³¤¶È°´ pyLen Ëã
+	//è¿™é‡Œç¼–ç é•¿åº¦æŒ‰ pyLen ç®—
 	strTemp = (char*)realloc(strTemp, sizeof(char) * pyLen + 1);
 	strcpy(strTemp, records[i].code.c_str());
 	fwrite(strTemp, sizeof (char) * pyLen + 1, 1, fpDict);
@@ -468,7 +468,7 @@ int TABLE::vwrite(string fname){
 	strTemp = (char*)realloc(strTemp, sizeof(char) * iTemp);
 	strcpy(strTemp, records[i].hz.c_str());
 	fwrite(strTemp, sizeof (char) * iTemp, 1, fpDict);
-	//Õâ¸öÊÇÓÃÀ´Ö¸Ê¾ÊÇ·ñÎªÆ´ÒôµÄ
+	//è¿™ä¸ªæ˜¯ç”¨æ¥æŒ‡ç¤ºæ˜¯å¦ä¸ºæ‹¼éŸ³çš„
 	if(records[i].ispy)
 	    cTemp = 1;
 	else
@@ -491,8 +491,8 @@ int TABLE::getSize(){
 }
 
 void TABLE::sortTable(){
-    //XXX Èç¹ûº¬ÓĞÆ´Òô¼ä¸ô·û
-    //µ«Ò²Ã»ÓĞ±¨Ë³Ğò²»¶Ô
+    //XXX å¦‚æœå«æœ‰æ‹¼éŸ³é—´éš”ç¬¦
+    //ä½†ä¹Ÿæ²¡æœ‰æŠ¥é¡ºåºä¸å¯¹
     sort(records.begin(), records.end());
 }
 
