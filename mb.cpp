@@ -391,6 +391,8 @@ int TABLE::vwrite(string fname){
     unsigned int	 iTemp;
     unsigned char	 cTemp;
     char		*strTemp;
+    char                *strCode;
+    int                  n;
 
     fpDict = fopen(fname.c_str(), "wb");
     if (!fpDict) {
@@ -458,11 +460,13 @@ int TABLE::vwrite(string fname){
     iTemp = records.size();
     cTemp = 0;
     fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);
+    //这里编码长度按 pyLen 算
+    n = sizeof(char) * pyLen + 1;
+    strCode = (char*)malloc(n);
     for(int i=0; i<records.size(); i++){
-	//这里编码长度按 pyLen 算
-	strTemp = (char*)realloc(strTemp, sizeof(char) * pyLen + 1);
-	strcpy(strTemp, records[i].code.c_str());
-	fwrite(strTemp, sizeof (char) * pyLen + 1, 1, fpDict);
+        memset(strCode, 0, n);
+	strncpy(strCode, records[i].code.c_str(), n-1);
+	fwrite(strCode, n, 1, fpDict);
 	iTemp = records[i].hz.length() +1;
 	fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);
 	strTemp = (char*)realloc(strTemp, sizeof(char) * iTemp);
@@ -479,6 +483,7 @@ int TABLE::vwrite(string fname){
 	iTemp = records[i].index;
 	fwrite(&iTemp, sizeof (unsigned int), 1, fpDict);
     }
+    free(strCode);
 
     free(strTemp);
     fclose(fpDict);
